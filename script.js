@@ -17,6 +17,8 @@ return `S${paddedSeason}E${paddedEpisodeNumber}`
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
+  const selectEpisode =document.getElementById("episode-select")
+  
   //I add this line for when we search something in input 
   rootElem .innerHTML ="";
   rootElem.textContent = ` You Got ${episodeList.length} Episode(s)`;
@@ -38,6 +40,11 @@ function makePageForEpisodes(episodeList) {
     // rootElem.appendChild(summaryP);
     // other way to two line above
     rootElem.innerHTML += episode.summary;
+    //add option for step 300
+    const option =document.createElement('option');
+    option.textContent =`${makeSeasonAndEpisodes(episode)}: ${episode.name}`
+    option.value =episode.id;
+    selectEpisode.appendChild(option);
   });
 }
   //input 
@@ -51,8 +58,16 @@ function makePageForEpisodes(episodeList) {
      return false;
   });
   makePageForEpisodes(filterEpisode);
-  //select input
 
-  });
+// const selectInputEl = document.getElementById("episode-select");
+selectEpisode.addEventListener("change",(e) => {
+  const idSelector =Number(e.target.value);
+  const selectEpisode =getAllEpisodes().find((ep)=>ep.id ===idSelector);
+  if(selectEpisode){
+    makePageForEpisodes([selectEpisode]);
+  }
+});
+});
+
 
 window.onload = setup;
